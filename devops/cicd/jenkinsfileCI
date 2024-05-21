@@ -1,25 +1,3 @@
-#!groovy
-
-import com.mapfre.pod.Container
-import com.mapfre.pod.ContainerType
-import com.mapfre.pod.ContainerTypeCustom
-import com.mapfre.pod.ContainerSize
-import com.mapfre.pod.ContainerVolume
-
-//Lib global tron, lib de seguranca global e de arquiterura Corporativa
-// @Library(['tron-pipeline-library-comun', 'security-library', 'global-pipeline-library-corparchitecture']) libcommon
-// // Content for email to committers
-// def GIT_COMMIT_EMAIL
-// //NOME DA ORGANIZACAO
-// def DEVOPS_PLATFORM_ORGANIZATION = 'org-mapfrebrasil'
-// //INTEGRACAO COM KEYVAULT
-// def keyVaultIds = [ 
-// ] as String[]
-
-// def variableIds = [ 
-// ] as String[]
-
-//Start of Pipeline
 pipeline {
 
     agent any
