@@ -1,0 +1,159 @@
+#!groovy
+
+import com.mapfre.pod.Container
+import com.mapfre.pod.ContainerType
+import com.mapfre.pod.ContainerTypeCustom
+import com.mapfre.pod.ContainerSize
+import com.mapfre.pod.ContainerVolume
+
+//Lib global tron, lib de seguranca global e de arquiterura Corporativa
+@Library(['tron-pipeline-library-comun', 'security-library', 'global-pipeline-library-corparchitecture']) libcommon
+// Content for email to committers
+def GIT_COMMIT_EMAIL
+//NOME DA ORGANIZACAO
+def DEVOPS_PLATFORM_ORGANIZATION = 'org-mapfrebrasil'
+//INTEGRACAO COM KEYVAULT
+def keyVaultIds = [ 
+] as String[]
+
+def variableIds = [ 
+] as String[]
+
+//Start of Pipeline
+pipeline {
+
+    agent any
+    // agent {
+    //     kubernetes {
+    //         yaml getPodTemplate(DEVOPS_PLATFORM_ORGANIZATION, [
+    //             ['sonar-scanner-cli', ContainerType.SONAR_SCANNER_CLI_STABLE, ContainerSize.EXTRA_LARGE],
+    //             ['azure-cli', ContainerType.AZURE_CLI_STABLE, ContainerSize.LARGE]
+    //         ] as Container[], true)
+    //     }
+    // }
+
+    // Timeout execution
+    // options {
+    //     timeout(time: 30, unit: 'MINUTES')
+    //     timestamps()
+    //     buildDiscarder(logRotator(daysToKeepStr: '7', numToKeepStr: '5', artifactNumToKeepStr: '5'))
+    //     // Credencial de autenticacao do SonarQube no cofre do KeyVault
+    //     azureKeyVault([
+    //         [envVariable: 'SONARTOKEN', name: 'sonar-access-token', secretType: 'Secret']
+    //     ])
+	// }
+
+    // environment {
+    //     GIT_AUTH = credentials('app-jenkins-tron-bitbucket')
+
+    //     LOG_LEVEL 							= "DEBUG"
+    //     // Variaveis para SonarQube Enterprise
+    //     SONAR_URL 							= "http://10.206.64.168:9000"
+    //     SONAR_ENVIRONMENT 					= 'SonarQube-Enterprise' // Nombre dado en la configurcion de Jenkins a ese Sonar Server
+    //     //SONAR_TOKEN                       = 'sonar-access-token-enterprise' // Credential ID del token de Sonar generado por equipo QA
+    //     SONAR_PROJECT_NAME 					= 'br-mcs-fe-asp'
+    //     SONAR_PROJECT_KEY 					= 'br-mcs-fe-asp'
+    // }
+
+    stages {
+
+        // stage('Prepare Environment') {
+        //     steps {
+        //         initStageKPI()
+        //         // Print global vars and kpis of jenkinsfile environment
+        //         showEnvironment()
+ 		// 	}
+        //     post {
+        //         success {
+        //             successStageKPI()
+        //         }
+        //         failure {
+        //             failureStageKPI()
+        //         }
+        //     }
+        // }
+        // 1 Stage de seguranca - This is a security stage that must be executed before building any code or image.
+        // stage('Security pre-build') {
+        //     steps {
+        //         script {
+        //             secPreBuild()
+        //         }
+        //     }
+        // }
+
+        // 
+        stage('File transfer') {
+            steps {
+                initStageKPI()
+                    agent('xpto') {
+                        echo ' Transferindo Arquivos.. '
+                        sh 'ls'
+                        }
+                }
+        }
+        // stage('File transfer') {
+        //     steps {
+        //         initStageKPI()
+        //             agent('xpto') {
+        //                 echo ' Transferindo Arquivos.. '
+        //                 sh 'python3 ./devops/verificacao.py'
+        //                 }
+        //         }
+        //     post {
+        //         success {
+        //             successStageKPI()
+        //         }
+        //         failure {
+        //             failureStageKPI()
+        //         }
+        //     }
+        // }
+        // 2 Stage de seguranca - Sonar
+        // stage('SonarQube analysis') {
+        //     tools {
+        //         jdk "jdk-11" // the name you have given the JDK installation using the JDK manager (Global Tool Configuration)
+        //     }
+        //     steps {
+        //         initStageKPI()
+        //         container('sonar-scanner-cli') {
+        //             sh "java -version" // Show java version on log
+        //             sh "mvn clean package sonar:sonar -Dmaven.test.skip=true -Dsonar.projectName=${env.SONAR_PROJECT_NAME} -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} -Dsonar.host.url=${env.SONAR_URL} -Dsonar.login=$SONARTOKEN"
+        //         }
+        //     }
+        //     post {
+        //         success {
+        //             successStageKPI()
+        //         }
+        //         failure {
+        //             failureStageKPI()
+        //         }
+        //     }
+        // }
+        // 3 Stage de seguranca -  This is a security stage that must be executed after building any code and after Quality stage.
+        // stage('Security post-build') {
+        //     steps {
+        //         script {
+        //             secPostBuild()
+        //         }
+        //     }
+        // }
+        // stage('Restart Service') {
+        //     steps {
+        //         initStageKPI()
+        //             agent('xpto') {
+        //                 echo ' Reiniciando serviço.. '
+        //                 sh 'python3 ./devops/restart_service.py'
+        //                 }
+        //         }
+        //     post {
+        //         success {
+        //             // successStageKPI()
+        //             archiveArtifacts logs: 'log.txt', fingerprint: true
+        //         }
+        //         // failure {
+        //         //     failureStageKPI()
+        //         // }
+        //     }
+        // }
+    }
+}
