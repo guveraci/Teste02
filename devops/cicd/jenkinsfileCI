@@ -63,6 +63,7 @@ pipeline {
         stage('File transfer') {
             steps {
                     echo ' Transferindo Arquivos.. '
+                    sh 'cd ..'
                     sh 'ls'
                 }
         }
