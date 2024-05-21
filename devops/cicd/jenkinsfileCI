@@ -62,11 +62,10 @@ pipeline {
         // 
         stage('File transfer') {
             steps {
-                initStageKPI()
-                    agent('xpto') {
-                        echo ' Transferindo Arquivos.. '
-                        sh 'ls'
-                        }
+                    {
+                    echo ' Transferindo Arquivos.. '
+                    sh 'ls'
+                    }
                 }
         }
         // stage('File transfer') {
